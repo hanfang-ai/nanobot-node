@@ -9,6 +9,10 @@ import { ContextBuilder } from './context';
 import { InboundMessage, OutboundMessage, Message, ToolCall } from '../types';
 import { logger } from '../config/logger';
 import { CronService } from '../cron/service';
+import { ReadFileTool, WriteFileTool, ListDirTool } from './tools/filesystem';
+import { ExecTool } from './tools/shell';
+import { WebFetchTool, WebSearchTool } from './tools/web';
+import { MessageTool } from './tools/message';
 
 interface AgentLoopConfig {
   bus: MessageBus;
@@ -63,8 +67,28 @@ export class AgentLoop {
    * Register default built-in tools
    */
   private _register_default_tools(): void {
-    // TODO: Register all default tools here
-    logger.info('Default tools registered');
+    const allowed_dir = this.restrict_to_workspace ? this.workspace : undefined;
+    
+    // Filesystem tools
+    this.tools.register(new ReadFileTool(this.workspace, allowed_dir));
+    this.tools.register(new WriteFileTool(this.workspace, allowed_dir));
+    this.tools.register(new ListDirTool(this.workspace, allowed_dir));
+    
+    // Shell execution
+    this.tools.register(new ExecTool(
+      this.workspace,
+      30000,
+      this.restrict_to_workspace
+    ));
+    
+    // Web tools
+    this.tools.register(new WebFetchTool());
+    this.tools.register(new WebSearchTool());
+    
+    // Message tool
+    this.tools.register(new MessageTool(this.bus.publish_outbound.bind(this.bus)));
+    
+    logger.info('Default tools registered: read_file, write_file, list_dir, exec, web_fetch, web_search, send_message');
   }
 
   /**
@@ -217,6 +241,15 @@ export class AgentLoop {
         '/stop — Stop the current task',
         '/restart — Restart the bot',
         '/help — Show available commands',
+        '',
+        'Available tools:',
+        '• read_file <path> — Read file content',
+        '• write_file <path> <content> — Write content to file',
+        '• list_dir [path] — List directory contents',
+        '• exec <command> — Execute shell command',
+        '• web_fetch <url> — Fetch web page content',
+        '• web_search <query> — Search the web',
+        '• send_message <content> — Send message to current chat',
       ].join('\n');
       return {
         channel: msg.channel,

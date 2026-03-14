@@ -19,8 +19,7 @@
   "author": "nanobot contributors",
   "license": "MIT",
   "dependencies": {
-    "@langchain/core": "^0.2.0",
-    "litellm": "^1.82.0",
+    "openai": "^4.0.0",
     "ws": "^8.16.0",
     "axios": "^1.6.0",
     "pino": "^8.19.0",
@@ -29,11 +28,11 @@
     "inquirer": "^9.2.0",
     "node-cron": "^3.0.3",
     "lowdb": "^7.0.0",
-    "zod": "^3.22.0",
     "uuid": "^9.0.1",
     "mime-types": "^2.1.35",
     "cheerio": "^1.0.0-rc.12",
-    "duckduckgo-search": "^3.0.0"
+    "duck-duck-scrape": "^2.2.5",
+    "js-yaml": "^4.1.0"
   },
   "devDependencies": {
     "@types/node": "^20.11.0",
