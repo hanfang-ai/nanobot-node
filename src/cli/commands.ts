@@ -179,6 +179,15 @@ program
   .description('Show version information')
   .action(versionCommand);
 
+program
+  .command('web')
+  .description('Start web UI server')
+  .option('-p, --port <port>', 'Port to listen on (default: 8765)')
+  .action((options) => {
+    process.env.NANOBOT_PORT = options.port || '8765';
+    require('../server/index').startServer();
+  });
+
 // Default command: show help
 program.parse(process.argv);
 
