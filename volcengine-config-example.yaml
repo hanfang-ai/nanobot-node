@@ -1,0 +1,20 @@
+# 火山引擎Doubao Coding Plan 配置示例
+model:
+  provider: volcengine
+  api_key: 你的火山引擎API Key
+  model: doubao-coding-1.0
+  base_url: https://ark.cn-beijing.volces.com/api/v3
+
+channels:
+  - type: cli
+    enabled: true
+
+# 可选：飞书通道配置
+# - type: feishu
+#   enabled: false
+#   app_id: cli_xxx
+#   app_secret: xxx
+
+restrict_to_workspace: true
+max_iterations: 40
+workspace: ~/.nanobot/workspace

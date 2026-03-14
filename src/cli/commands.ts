@@ -5,6 +5,7 @@ import { program } from 'commander';
 import { AgentLoop } from '../agent/loop';
 import { messageBus } from '../bus/queue';
 import { OpenAIProvider } from '../providers/openai';
+import { VolcEngineProvider } from '../providers/volcengine';
 import { getSessionManager } from '../session/manager';
 import { getCronService } from '../cron/service';
 import { CliChannel } from '../channels/cli';
@@ -70,6 +71,10 @@ async function startCommand(options: any) {
       case 'openai':
         provider = new OpenAIProvider(config.model.api_key, config.model.base_url);
         break;
+      case 'volcengine':
+      case 'doubao':
+        provider = new VolcEngineProvider(config.model.api_key, config.model.base_url);
+        break;
       default:
         throw new Error(`Unsupported provider: ${config.model.provider}`);
     }
@@ -125,10 +130,18 @@ function configCommand() {
   console.log('📝 nanobot configuration wizard');
   console.log('Create a config file at ~/.nanobot/config.yaml with the following content:');
   console.log(`
+# OpenAI 配置示例
 model:
   provider: openai
   api_key: sk-xxx
   model: gpt-4o
+
+# 火山引擎Doubao 配置示例（Coding Plan套餐）
+# model:
+#   provider: volcengine
+#   api_key: 你的火山引擎API Key
+#   model: doubao-coding-1.0
+#   base_url: https://ark.cn-beijing.volces.com/api/v3
 
 channels:
   - type: cli
