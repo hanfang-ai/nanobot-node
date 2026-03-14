@@ -11,7 +11,7 @@ export class VolcEngineProvider extends LLMProvider {
   defaultModel = 'doubao-coding-1.0'; // Coding Plan套餐默认模型
   private client: OpenAI;
 
-  constructor(apiKey: string, baseUrl: string = 'https://ark.cn-beijing.volces.com/api/v3') {
+  constructor(apiKey: string, baseUrl: string = 'https://ark.cn-beijing.volces.com/api/coding/v3') {
     super();
     this.client = new OpenAI({
       apiKey,
