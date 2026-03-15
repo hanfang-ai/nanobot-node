@@ -12,7 +12,7 @@ import { join } from 'path';
 import { existsSync, mkdirSync, writeFileSync, readFileSync } from 'fs';
 import * as yaml from 'js-yaml';
 
-const app = express();
+const app: express.Express = express();
 const PORT = process.env.NANOBOT_PORT || 8765;
 const DEFAULT_WORKSPACE = join(process.env.HOME || '/tmp', '.nanobot');
 const CONFIG_PATH = join(DEFAULT_WORKSPACE, 'config.yaml');
