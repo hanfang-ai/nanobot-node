@@ -109,13 +109,13 @@ function initAgent(config: Config): AgentLoop {
 // API Routes
 
 // Get config
-app.get('/api/config', (req, res) => {
+app.get('/api/config', (req: express.Request, res: express.Response) => {
   const config = loadConfig();
   res.json(config || {});
 });
 
 // Save config
-app.post('/api/config', (req, res) => {
+app.post('/api/config', (req: express.Request, res: express.Response) => {
   try {
     const config = req.body as Config;
     saveConfig(config);
@@ -126,7 +126,7 @@ app.post('/api/config', (req, res) => {
 });
 
 // Test connection
-app.post('/api/config/test', async (req, res) => {
+app.post('/api/config/test', async (req: express.Request, res: express.Response) => {
   try {
     const config = req.body as Config;
     let provider;
@@ -162,7 +162,7 @@ app.post('/api/config/test', async (req, res) => {
 });
 
 // Chat API
-app.post('/api/chat', async (req, res) => {
+app.post('/api/chat', async (req: express.Request, res: express.Response) => {
   try {
     const { message, session_key = 'web:default' } = req.body;
     
@@ -186,7 +186,7 @@ app.post('/api/chat', async (req, res) => {
 });
 
 // Serve React app for all other routes
-app.get('*', (req, res) => {
+app.get('*', (req: express.Request, res: express.Response) => {
   res.sendFile(join(__dirname, '../../dist/web/index.html'));
 });
 

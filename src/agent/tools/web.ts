@@ -6,12 +6,13 @@ import { logger } from '../../config/logger';
 import axios from 'axios';
 import { load } from 'cheerio';
 import * as ddg from 'duck-duck-scrape';
+const ddgSearch = require('duck-duck-scrape').default;
 
 export class WebFetchTool extends BaseTool {
   name = 'web_fetch';
   description = 'Fetch and extract readable content from a URL';
   parameters = {
-    type: 'object',
+    type: 'object' as const,
     properties: {
       url: {
         type: 'string',
@@ -79,7 +80,7 @@ export class WebSearchTool extends BaseTool {
   name = 'web_search';
   description = 'Search the web for information using DuckDuckGo';
   parameters = {
-    type: 'object',
+    type: 'object' as const,
     properties: {
       query: {
         type: 'string',
@@ -106,7 +107,7 @@ export class WebSearchTool extends BaseTool {
     logger.info(`Searching web for: "${query}"`);
 
     try {
-      const results = await ddg.text(query, {
+      const results = await ddgSearch.text(query, {
         maxResults: numResults,
       });
 

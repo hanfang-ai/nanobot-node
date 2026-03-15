@@ -9,7 +9,7 @@ export class MessageTool extends BaseTool {
   name = 'send_message';
   description = 'Send a message to a user or chat';
   parameters = {
-    type: 'object',
+    type: 'object' as const,
     properties: {
       content: {
         type: 'string',

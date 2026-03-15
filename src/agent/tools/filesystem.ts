@@ -11,7 +11,7 @@ export class ReadFileTool extends BaseTool {
   name = 'read_file';
   description = 'Read the contents of a file';
   parameters = {
-    type: 'object',
+    type: 'object' as const,
     properties: {
       path: {
         type: 'string',
@@ -60,7 +60,7 @@ export class WriteFileTool extends BaseTool {
   name = 'write_file';
   description = 'Write content to a file, overwriting if it exists';
   parameters = {
-    type: 'object',
+    type: 'object' as const,
     properties: {
       path: {
         type: 'string',
@@ -100,13 +100,14 @@ export class ListDirTool extends BaseTool {
   name = 'list_dir';
   description = 'List files and directories in a directory';
   parameters = {
-    type: 'object',
+    type: 'object' as const,
     properties: {
       path: {
         type: 'string',
         description: 'Path to the directory to list (relative to workspace, default: .)',
       },
     },
+    required: [],
   };
 
   constructor(private readonly workspace: string, private readonly allowed_dir?: string) {

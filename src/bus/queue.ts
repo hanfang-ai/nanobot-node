@@ -2,7 +2,8 @@
  * Message bus implementation
  */
 import { EventEmitter } from 'events';
-import { BusEvent, EventType, InboundMessage, OutboundMessage } from './events';
+import { BusEvent, EventType, InboundMessageEvent, OutboundMessageEvent } from './events';
+import type { InboundMessage, OutboundMessage } from '../types';
 import { logger } from '../config/logger';
 
 export class MessageBus {
@@ -57,7 +58,7 @@ export class MessageBus {
   /**
    * Publish an outbound message
    */
-  publish_outbound(message: OutboundMessage): void {
+  async publish_outbound(message: OutboundMessage): Promise<void> {
     this.outboundQueue.push(message);
     this.publish({
       type: EventType.OUTBOUND_MESSAGE,

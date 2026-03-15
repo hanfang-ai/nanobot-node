@@ -8,7 +8,9 @@ import { getSessionManager } from './session/manager';
 import { getCronService } from './cron/service';
 import { logger } from './config/logger';
 import { existsSync, mkdirSync } from 'fs';
-import { join, homedir } from 'path';
+import { join } from 'path';
+import { EventType } from './bus/events';
+const homedir = require('os').homedir;
 
 // Default workspace directory
 const DEFAULT_WORKSPACE = join(homedir(), '.nanobot');
@@ -49,7 +51,7 @@ async function main() {
     });
 
     // Handle outbound messages (in production, this would be handled by channel adapters)
-    messageBus.subscribe('outbound:message', (msg: any) => {
+    messageBus.subscribe(EventType.OUTBOUND_MESSAGE, (msg: any) => {
       if (!msg.metadata?._progress) { // Don't log progress messages
         logger.info(`Outbound message to ${msg.channel}:${msg.chat_id}: ${msg.content.slice(0, 100)}${msg.content.length > 100 ? '...' : ''}`);
       }

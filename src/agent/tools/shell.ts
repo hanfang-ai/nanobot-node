@@ -13,7 +13,7 @@ export class ExecTool extends BaseTool {
   name = 'exec';
   description = 'Execute a shell command and return the output';
   parameters = {
-    type: 'object',
+    type: 'object' as const,
     properties: {
       command: {
         type: 'string',

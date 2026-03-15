@@ -4,6 +4,7 @@
 import { OutboundMessage } from '../types';
 import { messageBus } from '../bus/queue';
 import { logger } from '../config/logger';
+import { EventType } from '../bus/events';
 
 export abstract class BaseChannel {
   abstract name: string;
@@ -30,7 +31,7 @@ export abstract class BaseChannel {
    * Register outbound message handler
    */
   protected registerOutboundHandler(): void {
-    messageBus.subscribe('outbound:message', async (msg: OutboundMessage) => {
+    messageBus.subscribe(EventType.OUTBOUND_MESSAGE, async (msg: OutboundMessage) => {
       if (msg.channel === this.name && this.enabled) {
         try {
           await this.send_message(msg.chat_id, msg.content, msg.metadata);

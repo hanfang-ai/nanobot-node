@@ -148,7 +148,7 @@ export class AgentLoop {
         // Convert to OpenAI tool call format
         const tool_call_dicts = response.tool_calls.map(tc => ({
           id: tc.id,
-          type: 'function',
+          type: 'function' as const,
           function: {
             name: tc.function.name,
             arguments: JSON.stringify(tc.function.arguments),
@@ -159,7 +159,7 @@ export class AgentLoop {
         messages.push({
           role: 'assistant',
           content: response.content || '',
-          tool_calls: tool_call_dicts,
+          tool_calls: response.tool_calls,
         });
 
         // Execute all tool calls
@@ -204,12 +204,12 @@ export class AgentLoop {
     }
 
     if (final_content === null && iteration >= this.max_iterations) {
-      logger.warning(`Max iterations (${this.max_iterations}) reached`);
+      logger.warn(`Max iterations (${this.max_iterations}) reached`);
       final_content = `I reached the maximum number of tool call iterations (${this.max_iterations}) without completing the task. You can try breaking the task into smaller steps.`;
     }
 
     return {
-      final_content,
+      final_content: final_content,
       tools_used,
       messages,
     };
@@ -259,7 +259,7 @@ export class AgentLoop {
     }
 
     // Build context messages
-    const initial_messages = this.context.build_messages({
+    const initial_messages = this.context.buildMessages({
       history: session.messages,
       current_message: msg.content,
       media: msg.media,
@@ -282,7 +282,7 @@ export class AgentLoop {
     };
 
     // Run agent loop
-    const { final_content, messages } = await this._run_agent_loop(
+    let { final_content, messages } = await this._run_agent_loop(
       initial_messages,
       on_progress
     );

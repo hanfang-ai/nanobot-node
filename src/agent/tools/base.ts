@@ -6,7 +6,11 @@ import { ToolDefinition } from '../../types';
 export abstract class BaseTool {
   abstract name: string;
   abstract description: string;
-  abstract parameters: ToolDefinition['function']['parameters'];
+  abstract parameters: {
+    type: 'object';
+    properties: Record<string, any>;
+    required: string[];
+  };
 
   /**
    * Execute the tool with given parameters

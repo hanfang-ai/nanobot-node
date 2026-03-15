@@ -11,7 +11,8 @@ import { getCronService } from '../cron/service';
 import { CliChannel } from '../channels/cli';
 import { logger } from '../config/logger';
 import { existsSync, mkdirSync, readFileSync } from 'fs';
-import { join, homedir } from 'path';
+import { join } from 'path';
+const homedir = require('os').homedir;
 import * as yaml from 'js-yaml';
 
 const DEFAULT_WORKSPACE = join(homedir(), '.nanobot');
